@@ -27,12 +27,13 @@ while True:
     totalFrames += 1
     # if totalFrames % fiveSecondInterval == 0:
 
-    pirate.motion(WINDOW_WIDTH, WINDOW_HEIGHT, FLOORLEVEL)
+    pirate.motion(totalFrames)
     # END LOGIC
 
 # DRAW
     screen.blit(background, (0,0))
     BaseClass.spriteContainer.draw(screen)
+    #screen.blit(pirate.image, (pirate.rect.x, pirate.rect.y))
     pygame.display.flip()
 
 

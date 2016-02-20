@@ -22,8 +22,8 @@ def process(pirate):
         pirate.run("right")
 
     else:
-        pirate.image = pygame.image.load("images/pirate_standing1.png")
-        pirate.image = pygame.transform.scale(pirate.image, (pirate.width, pirate.height))
+        #pirate.image = pygame.image.load("images/pirate_standing1.png")
+        #pirate.image = pygame.transform.scale(pirate.image, (pirate.width, pirate.height))
         pirate.run("stop")
 
     #  JUMPING REACTIONS

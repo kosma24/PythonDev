@@ -2,6 +2,7 @@ import pygame
 from BaseClass import *
 from Config import *
 
+
 class Pirate(BaseClass):
 
     List = pygame.sprite.Group()
@@ -14,8 +15,17 @@ class Pirate(BaseClass):
         self.jumping = False
         self.onGround = True
         self.allowedToJump = True
+        self.standing = True
+        self.images = []
+        self.images.append(pygame.image.load("images/standing1.png"))
+        self.images.append(pygame.image.load("images/standing2.png"))
+        self.images[0] = pygame.transform.scale(self.images[0], (self.width, self.height))
+        self.images[1] = pygame.transform.scale(self.images[1], (self.width, self.height))
+        self.current = 0
+        self.image = self.images[0]
 
-    def motion(self, WINDOW_WIDTH, WINDOW_HEIGHT, FLOORLEVEL):
+
+    def motion(self, totalFrames):
         # Horizontal velocity + sprite's width
         predictedLocation = self.rect.x + self.velx
 
@@ -25,11 +35,7 @@ class Pirate(BaseClass):
         elif predictedLocation + self.width > WINDOW_WIDTH:
             self.velx = 0
 
-        if self.velx >= MAX_SPEED:
-            self.velx = MAX_SPEED
-        elif self.velx <= -MAX_SPEED:
-            self.velx = -MAX_SPEED
-
+        self.__runControl()
         # GRAVITY EFFECT
         if not self.onGround:
             self.vely += GRAVITY
@@ -44,16 +50,20 @@ class Pirate(BaseClass):
             self.vely = 0
             self.onGround = True
 
-
         # JUMPING MOTION
+        self.__jumpMotion()
+        self.__animation(totalFrames)
+
+
+##########################################################
+##                 FUNCTIONS / METHODS
+##########################################################
+    def __jumpMotion(self):
         if self.jumping:
             self.__startJump()
         else:
             self.__endJump()
 
-##########################################################
-##                 FUNCTIONS / METHODS
-##########################################################
     def __startJump(self):
         if self.allowedToJump:
             if self.onGround:
@@ -82,8 +92,24 @@ class Pirate(BaseClass):
             else:
                 self.velx += RUNNING_ACCELERATION
         # SLOW DOWN
-        else:
-            if absoluteVelocity < 0.3:
+        elif self.onGround:
+            if absoluteVelocity < 0.5:
                 self.velx = 0
             else:
                 self.velx -= (self.velx * 0.2)
+
+    def __runControl(self):
+        if self.velx >= MAX_SPEED:
+            self.velx = MAX_SPEED
+        elif self.velx <= -MAX_SPEED:
+            self.velx = -MAX_SPEED
+
+    def __animation(self, totalFrames):
+        if totalFrames % (FPS * 2) == 0:
+            if self.standing:
+                if self.current == 1:
+                    self.image = self.images[0]
+                    self.current = 0
+                else:
+                    self.image = self.images[1]
+                    self.current = 1
