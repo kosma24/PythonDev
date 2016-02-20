@@ -31,7 +31,8 @@ class Pirate(BaseClass):
             self.velx = -MAX_SPEED
 
         # GRAVITY EFFECT
-        self.vely += GRAVITY
+        if not self.onGround:
+            self.vely += GRAVITY
 
         # MOVING EFFECt
         self.rect.x += self.velx
@@ -45,23 +46,25 @@ class Pirate(BaseClass):
 
 
         # JUMPING MOTION
-        if self.allowedToJump:
-            if self.jumping:
-                self.__startJump()
-            else:
-                self.__endJump()
+        if self.jumping:
+            self.__startJump()
+        else:
+            self.__endJump()
 
 ##########################################################
 ##                 FUNCTIONS / METHODS
 ##########################################################
     def __startJump(self):
-        if self.onGround:
-            self.vely = -25
-            self.onGround = False
-            self.allowedToJump = False
+        if self.allowedToJump:
+            if self.onGround:
+                self.vely = -25
+                self.onGround = False
+                self.allowedToJump = False
 
     def __endJump(self):
-        if self.vely < -10:
+        if self.onGround:
+            self.allowedToJump = True
+        elif self.vely < -10:
             self.vely = -10
 
     def run(self, direction):

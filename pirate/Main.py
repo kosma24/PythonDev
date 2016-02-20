@@ -37,5 +37,4 @@ while True:
 
 
     # END DRAW
-
     clock.tick(FPS)

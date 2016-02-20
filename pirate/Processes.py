@@ -27,9 +27,9 @@ def process(pirate):
         pirate.run("stop")
 
     #  JUMPING REACTIONS
-    if not keys[pygame.K_w]:
-        pirate.jumping = False
-        pirate.allowedToJump = True
-
     if keys[pygame.K_w]:
         pirate.jumping = True
+
+    if not keys[pygame.K_w]:
+        pirate.jumping = False
+        #pirate.allowedToJump = True
