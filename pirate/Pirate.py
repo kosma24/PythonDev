@@ -39,7 +39,7 @@ class Pirate(BaseClass):
         self.rect.y += self.vely
 
         # PREVENTING SPRITE BEYOND FLOOR LEVEL
-        if (self.rect.y >= FLOORLEVEL):
+        if self.rect.y >= FLOORLEVEL:
             self.rect.y = FLOORLEVEL
             self.vely = 0
             self.onGround = True
@@ -83,7 +83,7 @@ class Pirate(BaseClass):
                 self.velx += RUNNING_ACCELERATION
         # SLOW DOWN
         else:
-            if absoluteVelocity < 0.5:
+            if absoluteVelocity < 0.3:
                 self.velx = 0
             else:
-                self.velx -= (self.velx * 0.1)
+                self.velx -= (self.velx * 0.2)
