@@ -1,4 +1,5 @@
 import pygame
+from BaseClass import *
 from Config import *
 
 class Pirate(BaseClass):
@@ -24,15 +25,15 @@ class Pirate(BaseClass):
         elif predictedLocation + self.width > WINDOW_WIDTH:
             self.velx = 0
 
-        if self.velx >= 12:
-            self.velx = 12
-        elif self.velx <= -12:
-            self.velx = -12
+        if self.velx >= MAX_SPEED:
+            self.velx = MAX_SPEED
+        elif self.velx <= -MAX_SPEED:
+            self.velx = -MAX_SPEED
 
         # GRAVITY EFFECT
         self.vely += GRAVITY
 
-        # VELOCITY APPLICAITON
+        # MOVING EFFECt
         self.rect.x += self.velx
         self.rect.y += self.vely
 

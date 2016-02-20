@@ -1,15 +1,14 @@
 import pygame
 import sys
 
-
 def process(pirate):
-# MAIN EVENT HANDLER
+    # MAIN EVENT HANDLER
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
 
-# KEY MAPPING AND REACTIONS
+    # KEY MAPPING AND REACTIONS
     keys = pygame.key.get_pressed()  # returns a list of pressed keys
 
     if keys[pygame.K_a]:
@@ -27,11 +26,10 @@ def process(pirate):
         pirate.image = pygame.transform.scale(pirate.image, (pirate.width, pirate.height))
         pirate.run("stop")
 
-
-
-    if keys[pygame.K_w]:
-        pirate.jumping = True
-
+    #  JUMPING REACTIONS
     if not keys[pygame.K_w]:
         pirate.jumping = False
         pirate.allowedToJump = True
+
+    if keys[pygame.K_w]:
+        pirate.jumping = True

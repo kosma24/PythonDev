@@ -1,15 +1,13 @@
 import pygame
 import sys
-from Classes import *
+from Pirate import *
 from Processes import process
+from Config import *
 
 pygame.init()
 
 # WINDOW
-WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 640
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), 0, 32)
-
 
 background = pygame.image.load("images/background.png")
 
@@ -20,8 +18,6 @@ fiveSecondInterval = FPS * 5
 totalFrames = 0
 
 # OBJECTS
-SPRITESCALE = 3
-FLOORLEVEL = WINDOW_HEIGHT - 180
 pirate = Pirate(0, FLOORLEVEL, 22, 29, "images/pirate_standing1.png", SPRITESCALE)
 
 # ---------- Main Program Loop -------------
