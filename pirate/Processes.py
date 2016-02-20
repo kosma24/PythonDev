@@ -10,20 +10,28 @@ def process(pirate):
             sys.exit()
 
 # KEY MAPPING AND REACTIONS
-    pressed_keys = pygame.key.get_pressed()  # returns a list of pressed keys
-    released_keys = pygame.key.get_released()
-    if pressed_keys[pygame.K_a]:
+    keys = pygame.key.get_pressed()  # returns a list of pressed keys
+
+    if keys[pygame.K_a]:
         pirate.image = pygame.image.load("images/pirate_left_move.png")
         pirate.image = pygame.transform.scale(pirate.image, (pirate.width, pirate.height))
-        pirate.velx = -5
-    elif pressed_keys[pygame.K_d]:
+        pirate.run("left")
+
+    elif keys[pygame.K_d]:
         pirate.image = pygame.image.load("images/pirate_right_move.png")
         pirate.image = pygame.transform.scale(pirate.image, (pirate.width, pirate.height))
-        pirate.velx = 5
+        pirate.run("right")
+
     else:
         pirate.image = pygame.image.load("images/pirate_standing1.png")
         pirate.image = pygame.transform.scale(pirate.image, (pirate.width, pirate.height))
-        pirate.velx = 0
+        pirate.run("stop")
 
-    if pressed_keys[pygame.K_w]:
+
+
+    if keys[pygame.K_w]:
         pirate.jumping = True
+
+    if not keys[pygame.K_w]:
+        pirate.jumping = False
+        pirate.allowedToJump = True
