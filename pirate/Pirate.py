@@ -16,6 +16,8 @@ class Pirate(BaseClass):
         self.onGround = True
         self.allowedToJump = True
         self.standing = True
+        self.runningLeft = False
+        self.runningRight = False
         self.images = []
         self.images.append(pygame.image.load("images/standing1.png"))
         self.images.append(pygame.image.load("images/standing2.png"))
@@ -113,3 +115,7 @@ class Pirate(BaseClass):
                 else:
                     self.image = self.images[1]
                     self.current = 1
+            elif self.runningLeft:
+                pass
+            elif self.runningRight:
+                pass
