@@ -1,12 +1,12 @@
 import pygame
 
-class BaseClass(pygame.sprite.Sprite):
+class GameObject(pygame.sprite.Sprite):
 
     container = pygame.sprite.Group()
 
     def __init__(self, x, y, width, height, imageString, scale):
         pygame.sprite.Sprite.__init__(self)
-        BaseClass.container.add(self)
+        GameObject.container.add(self)
 
         self.width = width * scale
         self.height = height * scale

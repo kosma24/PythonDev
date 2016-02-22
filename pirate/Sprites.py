@@ -1,15 +1,15 @@
 import pygame
-from GameObject import *
 from Config import *
+from GameObject import *
 
 
-class Pirate(GameObject):
+class Player(GameObject):
 
     List = pygame.sprite.Group()
 
     def __init__(self, x, y, width, height, imageString, scale):
         GameObject.__init__(self, x, y, width, height, imageString, scale)
-        Pirate.List.add(self)
+        Player.List.add(self)
         self.velx = 0
         self.vely = 0
         self.jumping = False
