@@ -25,8 +25,6 @@ clock = pygame.time.Clock()
 FPS = 30
 totalFrames = 0
 
-# OBJECTS
-player = Player(50, FLOORLEVEL, 22, 29, "images/pirate_standing1.png", SPRITESCALE)
 
 # LEVEL GENERATOR
 x = y = 0
@@ -59,10 +57,13 @@ level = [
 for row in level:
     for col in row:
         if col == "P":
-            Block(x, y, 50, 50, "images/block.png", 1)
+            Block(BLOCK, x, y, "images/block.png", 1)
         x += 50
     y += 50
     x = 0
+
+# OBJECTS
+player = Player(PLAYER, 150, FLOORLEVEL, "images/pirate_standing1.png", SPRITESCALE)
 
 # CAMERA
 total_level_width  = len(level[0]) * 50
@@ -89,9 +90,16 @@ while True:
     camera.update(player)
     for obj in GameObject.container:
         screen.blit(obj.image, camera.apply(obj))
+        _, _, w, h = obj.rect
+        rectang = pygame.Surface((w, h))
+        rectang.convert()
+        if obj.ID == PLAYER:
+            rectang.fill((20,250,20))
+        else:
+            rectang.fill((250,20,20))
+        screen.blit(rectang, camera.apply(obj))
 
     pygame.display.update()
-
     # END DRAW
     totalFrames += 1
     clock.tick(FPS)

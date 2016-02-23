@@ -18,9 +18,9 @@ def simple_camera(camera, target_rect):
     return pygame.Rect(-l + HALF_WIDTH, -t + HALF_HEIGHT, w, h)
 
 def complex_camera(camera, target_rect):
-    l, t, _, _ = target_rect
+    l, t, spriteWidth, spriteHeight = target_rect
     _, _, w, h = camera
-    l, t, _, _ = -l + HALF_WIDTH, -t + HALF_HEIGHT, w, h
+    l, t, _, _ = -l + HALF_WIDTH -(spriteWidth / 2), -t + HALF_HEIGHT -(spriteHeight / 2), w, h
 
     l = min(0, l)                           # stop scrolling at the left edge
     l = max(-(camera.width - WINDOW_WIDTH), l)   # stop scrolling at the right edge

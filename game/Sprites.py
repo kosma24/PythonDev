@@ -1,14 +1,15 @@
 import pygame
 from Config import *
 from GameObject import *
+from Objects import *
 
 
 class Player(GameObject):
 
     List = pygame.sprite.Group()
 
-    def __init__(self, x, y, width, height, imageString, scale):
-        GameObject.__init__(self, x, y, width, height, imageString, scale)
+    def __init__(self, ID, x, y, imageString, scale):
+        GameObject.__init__(self, ID, x, y, imageString, scale)
         Player.List.add(self)
         self.velx = 0
         self.vely = 0
@@ -18,13 +19,8 @@ class Player(GameObject):
         self.standing = True
         self.runningLeft = False
         self.runningRight = False
-        self.images = []
-        self.images.append(pygame.image.load("images/standing1.png"))
-        self.images.append(pygame.image.load("images/standing2.png"))
-        self.images[0] = pygame.transform.scale(self.images[0], (self.width, self.height))
-        self.images[1] = pygame.transform.scale(self.images[1], (self.width, self.height))
+        self.standingImages = self.loadImages(("images/standing1.png", "images/standing2.png"))
         self.current = 0
-        self.image = self.images[0]
 
 
     def motion(self, totalFrames):
@@ -32,10 +28,10 @@ class Player(GameObject):
         predictedLocation = self.rect.x + self.velx
 
         # PREVENTING SPIRTE GOING OF THE WINDOW
-        if predictedLocation < 0:
-            self.velx = 0
-        elif predictedLocation + self.width > WINDOW_WIDTH:
-            self.velx = 0
+        #if predictedLocation < 0:
+        #    self.velx = 0
+        #elif predictedLocation + self.width > WINDOW_WIDTH:
+        #    self.velx = 0
 
         self.__runControl()
         # GRAVITY EFFECT
@@ -47,14 +43,21 @@ class Player(GameObject):
         self.rect.y += self.vely
 
         # PREVENTING SPRITE BEYOND FLOOR LEVEL
-        if self.rect.y >= FLOORLEVEL:
-            self.rect.y = FLOORLEVEL
-            self.vely = 0
-            self.onGround = True
+        #if self.rect.y >= FLOORLEVEL:
+        #    self.rect.y = FLOORLEVEL
+        #    self.vely = 0
+        #    self.onGround = True
 
         # JUMPING MOTION
         self.__jumpMotion()
         self.__animation(totalFrames)
+
+        #print(GameObject.container)
+        for block in Block.List:
+            if self.rect.colliderect(block.rect):
+                self.vely = 0
+                self.onGround = True
+                self.__endJump()
 
 
     ##########################################################
@@ -110,10 +113,10 @@ class Player(GameObject):
         if totalFrames % (FPS * 2) == 0:
             if self.standing:
                 if self.current == 1:
-                    self.image = self.images[0]
+                    self.image = self.standingImages[0]
                     self.current = 0
                 else:
-                    self.image = self.images[1]
+                    self.image = self.standingImages[1]
                     self.current = 1
             elif self.runningLeft:
                 pass
