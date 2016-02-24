@@ -13,95 +13,88 @@ class Player(GameObject):
         Player.List.add(self)
         self.velx = 0
         self.vely = 0
-        self.jumping = False
-        self.onGround = True
-        self.allowedToJump = True
-        self.standing = True
-        self.runningLeft = False
-        self.runningRight = False
+        self.state = {
+            'standing' : True,
+            'movingLeft' : False,
+            'movingRight' : False,
+            'onGround' : True,
+            'jumping' : False,
+            'allowedToJump' : True
+        }
         self.standingImages = self.loadImages(("images/standing1.png", "images/standing2.png"))
-        self.current = 0
-
-
-    def motion(self, totalFrames):
-        # Horizontal velocity + sprite's width
-        predictedLocation = self.rect.x + self.velx
-
-        # PREVENTING SPIRTE GOING OF THE WINDOW
-        #if predictedLocation < 0:
-        #    self.velx = 0
-        #elif predictedLocation + self.width > WINDOW_WIDTH:
-        #    self.velx = 0
-
-        self.__runControl()
-        # GRAVITY EFFECT
-        if not self.onGround:
-            self.vely += GRAVITY
-
-        # MOVING EFFECt
-        self.rect.x += self.velx
-        self.rect.y += self.vely
-
-        # PREVENTING SPRITE BEYOND FLOOR LEVEL
-        #if self.rect.y >= FLOORLEVEL:
-        #    self.rect.y = FLOORLEVEL
-        #    self.vely = 0
-        #    self.onGround = True
-
-        # JUMPING MOTION
-        self.__jumpMotion()
-        self.__animation(totalFrames)
-
-        #print(GameObject.container)
-        for block in Block.List:
-            if self.rect.colliderect(block.rect):
-                self.vely = 0
-                self.onGround = True
-                self.__endJump()
-
+        self.currentStandingImage = 0
 
     ##########################################################
     ##                 FUNCTIONS / METHODS
     ##########################################################
+
+    def motion(self, totalFrames):
+
+        self.__runControl()
+
+        # GRAVITY EFFECT
+        if not self.state['onGround']:
+            self.vely += GRAVITY
+
+        # MOVING EFFECT
+        self.rect.left += self.velx
+        self.collide(self.velx, 0, Block.List)
+        self.rect.top += self.vely
+        self.state['onGround'] = False
+        self.collide(0, self.vely, Block.List)
+
+        self.__animation(totalFrames)
+
+        # JUMPING MOTION
+        self.__jumpMotion()
+
     def __jumpMotion(self):
-        if self.jumping:
+        if self.state['jumping']:
             self.__startJump()
         else:
             self.__endJump()
 
     def __startJump(self):
-        if self.allowedToJump:
-            if self.onGround:
-                self.vely = -25
-                self.onGround = False
-                self.allowedToJump = False
+        if self.state['allowedToJump']:
+            if self.state['onGround']:
+                self.vely = -JUMP_VALUE
+                self.state['onGround'] = False
+                self.state['allowedToJump'] = False
 
     def __endJump(self):
-        if self.onGround:
-            self.allowedToJump = True
-        elif self.vely < -10:
-            self.vely = -10
+        if self.state['onGround']:
+            self.state['allowedToJump'] = True
+            self.valy = 0
+        elif self.vely < -MAX_FALLING_SPEED:
+            self.vely = -MAX_FALLING_SPEED
 
     def run(self, direction):
         absoluteVelocity = abs(self.velx)
         # MOVE LEFT
         if direction == "left":
-            if absoluteVelocity <= WALKING_THRESHOLD:
-                self.velx -= WALKING_ACCELERATION
+            self.__changeStance(False, True, False)
+            if not self.velx <= 0:
+                self.velx += -(self.velx * 0.2)
+            if absoluteVelocity <= WALKING_THRESHOLD or not self.state['onGround']:
+                self.velx += -WALKING_ACCELERATION
             else:
-                self.velx -= RUNNING_ACCELERATION
+                self.velx += -RUNNING_ACCELERATION
         # MOVE RIGHT
         elif direction == "right":
-            if absoluteVelocity <= WALKING_THRESHOLD:
+            self.__changeStance(False, False, True)
+            if not self.velx >= 0:
+                self.velx += -(self.velx * 0.2)
+            if absoluteVelocity <= WALKING_THRESHOLD or not self.state['onGround']:
                 self.velx += WALKING_ACCELERATION
             else:
                 self.velx += RUNNING_ACCELERATION
         # SLOW DOWN
-        elif self.onGround:
-            if absoluteVelocity < 0.5:
+        else:
+            self.__changeStance(True, False, False)
+            if absoluteVelocity < 0.7:
                 self.velx = 0
             else:
-                self.velx -= (self.velx * 0.2)
+                self.velx += -(self.velx * 0.2)
 
     def __runControl(self):
         if self.velx >= MAX_SPEED:
@@ -111,14 +104,34 @@ class Player(GameObject):
 
     def __animation(self, totalFrames):
         if totalFrames % (FPS * 2) == 0:
-            if self.standing:
-                if self.current == 1:
+            if self.state['standing']:
+                if self.currentStandingImage == 1:
                     self.image = self.standingImages[0]
-                    self.current = 0
+                    self.currentStandingImage = 0
                 else:
                     self.image = self.standingImages[1]
-                    self.current = 1
-            elif self.runningLeft:
+                    self.currentStandingImage = 1
+            elif self.state['movingLeft']:
                 pass
-            elif self.runningRight:
+            elif self.state['movingRight']:
                 pass
+
+    def collide(self, x, y, objectList):
+        for obj in objectList:
+            if pygame.sprite.collide_rect(self, obj):
+                if x > 0:
+                    self.rect.right = obj.rect.left
+                if x < 0:
+                    self.rect.left = obj.rect.right
+                if y < 0:
+                    self.rect.top = obj.rect.bottom
+                    self.vely = 3
+                if y > 0:
+                    self.rect.bottom = obj.rect.top
+                    self.state['onGround'] = True
+                    self.vely = 0
+
+    def __changeStance(self, standing, movingLeft, movingRight):
+        self.state['standing'] = standing
+        self.state['movingLeft'] = movingLeft
+        self.state['movingRight'] = movingRight

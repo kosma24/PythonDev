@@ -26,8 +26,7 @@ def process(player):
 
     #  JUMPING REACTIONS
     if keys[pygame.K_UP] or keys[pygame.K_w]:
-        player.jumping = True
+        player.state['jumping'] = True
 
     if not keys[pygame.K_w] or keys[pygame.K_UP]:
-        player.jumping = False
-        #player.allowedToJump = True
+        player.state['jumping'] = False

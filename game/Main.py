@@ -4,8 +4,8 @@ import pygame
 import sys
 from Config import *
 from GameObject import *
-from Sprites import *
 from Objects import *
+from Sprites import Player
 from Processes import *
 from Classes import *
 
@@ -63,7 +63,7 @@ for row in level:
     x = 0
 
 # OBJECTS
-player = Player(PLAYER, 150, FLOORLEVEL, "images/pirate_standing1.png", SPRITESCALE)
+player = Player(PLAYER, 350, FLOORLEVEL, "images/pirate_standing1.png", SPRITESCALE)
 
 # CAMERA
 total_level_width  = len(level[0]) * 50
@@ -74,32 +74,28 @@ camera = Camera(complex_camera, total_level_width, total_level_height)
 # ---------- Main Program Loop -------------
 while True:
     process(player)
-# LOGIC
-    # if totalFrames % fiveSecondInterval == 0:
 
     player.motion(totalFrames)
-    # END LOGIC
 
-# DRAW
-    #screen.blit(player.image, (player.rect.x, player.rect.y))
     screen.blit(background, (0,0))
 
-    #BaseStructure.container.draw(screen)
-    #BaseClass.container.draw(screen)
-
     camera.update(player)
+
     for obj in GameObject.container:
         screen.blit(obj.image, camera.apply(obj))
-        _, _, w, h = obj.rect
+    '''    _, _, w, h = obj.rect
         rectang = pygame.Surface((w, h))
         rectang.convert()
         if obj.ID == PLAYER:
             rectang.fill((20,250,20))
         else:
             rectang.fill((250,20,20))
-        screen.blit(rectang, camera.apply(obj))
+        screen.blit(rectang, camera.apply(obj)) '''
 
     pygame.display.update()
-    # END DRAW
+
+    if totalFrames % (FPS * 3) == 0:
+        print("3 sec passed")
+
     totalFrames += 1
     clock.tick(FPS)
