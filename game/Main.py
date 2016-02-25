@@ -75,7 +75,8 @@ camera = Camera(complex_camera, total_level_width, total_level_height)
 while True:
     process(player)
 
-    player.motion(totalFrames)
+    cursor = pygame.mouse.get_pos()
+    player.motion(totalFrames, cursor)
 
     screen.blit(background, (0,0))
 
@@ -83,19 +84,14 @@ while True:
 
     for obj in GameObject.container:
         screen.blit(obj.image, camera.apply(obj))
-    '''    _, _, w, h = obj.rect
-        rectang = pygame.Surface((w, h))
-        rectang.convert()
-        if obj.ID == PLAYER:
-            rectang.fill((20,250,20))
-        else:
-            rectang.fill((250,20,20))
-        screen.blit(rectang, camera.apply(obj)) '''
+
+    playerPos = camera.apply(player)
+    pygame.draw.line(screen, (25, 76, 190), playerPos.center, cursor, 5)
 
     pygame.display.update()
 
-    if totalFrames % (FPS * 3) == 0:
-        print("3 sec passed")
+    #if totalFrames % (FPS * 3) == 0:
+    #    print("3 sec passed")
 
     totalFrames += 1
     clock.tick(FPS)

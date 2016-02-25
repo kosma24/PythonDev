@@ -28,7 +28,7 @@ class Player(GameObject):
     ##                 FUNCTIONS / METHODS
     ##########################################################
 
-    def motion(self, totalFrames):
+    def motion(self, totalFrames, cursor):
 
         self.__runControl()
 
@@ -43,6 +43,9 @@ class Player(GameObject):
         self.collide(self.velx, 0, Block.List)
         self.rect.top += self.vely
         self.collide(0, self.vely, Block.List)
+
+        #print("left: %d \t right: %d \t top: %d \t bottom: %d") % (self.rect.left, self.rect.right, self.rect.top, self.rect.bottom)
+        #print(self.rect.center)
 
         # JUMPING MOTION
         self.__jumpMotion()
@@ -134,8 +137,6 @@ class Player(GameObject):
                     self.rect.bottom = obj.rect.top
                     self.state['onGround'] = True
                     self.vely = 0
-                #else:
-                #    self.state['onGround'] = False
 
     def __changeStance(self, standing, movingLeft, movingRight):
         self.state['standing'] = standing
