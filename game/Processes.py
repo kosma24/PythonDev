@@ -28,5 +28,5 @@ def process(player):
     if keys[pygame.K_UP] or keys[pygame.K_w]:
         player.state['jumping'] = True
 
-    if not keys[pygame.K_w] or keys[pygame.K_UP]:
+    elif not keys[pygame.K_w] or keys[pygame.K_UP]:
         player.state['jumping'] = False

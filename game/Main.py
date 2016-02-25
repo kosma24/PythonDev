@@ -18,7 +18,7 @@ screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), 0, 32)
 #background = pygame.image.load("images/background.png")
 background = pygame.Surface(screen.get_size())
 background = background.convert()
-background.fill((30, 30, 30))
+background.fill((20, 20, 20))
 
 # CLOCK FPS
 clock = pygame.time.Clock()
@@ -41,16 +41,16 @@ level = [
     "P                                          P",
     "P                          PPPPPPP         P",
     "P                 PPPPPP                   P",
-    "P                                          P",
-    "P         PPPPPPP                          P",
+    "P                                   pppp   P",
+    "P         PPPP                             P",
     "P                                          P",
     "P                     PPPPPP               P",
     "P                                          P",
-    "P   PPPPPPPPPPP                            P",
+    "P   PPPPPP                                 P",
     "P                                          P",
     "P                 PPPPPPPPPPP              P",
     "P                                          P",
-    "P                                          P",
+    "P   PPPPPPPPP                              P",
     "P                                          P",
     "P                                          P",
     "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"]

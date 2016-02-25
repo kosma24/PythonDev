@@ -33,20 +33,22 @@ class Player(GameObject):
         self.__runControl()
 
         # GRAVITY EFFECT
-        if not self.state['onGround']:
-            self.vely += GRAVITY
+        self.vely += GRAVITY
+
+        if self.vely < 2.5:
+            self.state['onGround'] = False
 
         # MOVING EFFECT
         self.rect.left += self.velx
         self.collide(self.velx, 0, Block.List)
         self.rect.top += self.vely
-        self.state['onGround'] = False
         self.collide(0, self.vely, Block.List)
-
-        self.__animation(totalFrames)
 
         # JUMPING MOTION
         self.__jumpMotion()
+
+        # ANIMATIONS
+        self.__animation(totalFrames)
 
     def __jumpMotion(self):
         if self.state['jumping']:
@@ -57,7 +59,7 @@ class Player(GameObject):
     def __startJump(self):
         if self.state['allowedToJump']:
             if self.state['onGround']:
-                self.vely = -JUMP_VALUE
+                self.vely -= JUMP_VALUE
                 self.state['onGround'] = False
                 self.state['allowedToJump'] = False
 
@@ -121,15 +123,19 @@ class Player(GameObject):
             if pygame.sprite.collide_rect(self, obj):
                 if x > 0:
                     self.rect.right = obj.rect.left
+                    self.velx += -1
                 if x < 0:
                     self.rect.left = obj.rect.right
+                    self.velx += 1
                 if y < 0:
                     self.rect.top = obj.rect.bottom
-                    self.vely = 3
+                    self.vely = 4
                 if y > 0:
                     self.rect.bottom = obj.rect.top
                     self.state['onGround'] = True
                     self.vely = 0
+                #else:
+                #    self.state['onGround'] = False
 
     def __changeStance(self, standing, movingLeft, movingRight):
         self.state['standing'] = standing
