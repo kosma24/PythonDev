@@ -2,14 +2,14 @@ import pygame
 import sys
 from Objects import *
 
-def process(player, cursor):
+def process(player, playerPos, cursor):
     # MAIN EVENT HANDLER
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
         if  event.type == pygame.MOUSEBUTTONUP:
-            Swing(player, cursor)
+            Swing(playerPos, cursor, 35)
 
 
     # KEY MAPPING AND REACTIONS

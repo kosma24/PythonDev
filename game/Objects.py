@@ -16,22 +16,29 @@ class Swing(pygame.sprite.Sprite):
 
     List = pygame.sprite.Group()
 
-    def __init__(self, Player, cursor):
+    def __init__(self, playerPos, cursor, degree):
         pygame.sprite.Sprite.__init__(self)
         Swing.List.add(self)
 
-        self.center = Player.rect.center
+        self.playerPos = playerPos
+        self.center = playerPos.center
         self.cursor = cursor
+        self.degree = degree
         self.endPoint = self.__get_outer_point()
+        self.framesToLive = 1
 
     def slash(self):
-        pass
+
+        Swing(self.playerPos, self.cursor, self.degree-25)
+        self.__delete()
+
 
     def __fadeOut(self):
         pass
 
     def __delete(self):
-        pass
+        Swing.List.remove(self)
+        del self
 
     def __get_inner_point(self):
         pass
@@ -39,13 +46,16 @@ class Swing(pygame.sprite.Sprite):
     def __get_outer_point(self):
         cursorX = float(self.cursor[0] - self.center[0])
         cursorY = float(self.cursor[1] - self.center[1])
+        if cursorY == 0:
+            cursorY == 1
+        if cursorX == 0:
+            cursorX = 1
 
         theta = math.degrees(math.atan(float(cursorY / cursorX)))
-        alfa = theta + 35
-        y = math.sin(math.radians(alfa)) * 75
+        alfa = theta + self.degree
+        y = math.cos(math.radians(alfa)) * 75
         x = math.sqrt(math.pow(75, 2) - math.pow(y, 2))
         y = int(y + self.center[1])
         x = int(x + self.center[0])
-        point = (x, y)
-        return point
+        return (x, y)
         # math.atanh(x)
