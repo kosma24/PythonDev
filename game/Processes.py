@@ -1,12 +1,16 @@
 import pygame
 import sys
+from Objects import *
 
-def process(player):
+def process(player, cursor):
     # MAIN EVENT HANDLER
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        if  event.type == pygame.MOUSEBUTTONUP:
+            Swing(player, cursor)
+
 
     # KEY MAPPING AND REACTIONS
     keys = pygame.key.get_pressed()  # returns a list of pressed keys
@@ -30,3 +34,5 @@ def process(player):
 
     elif not keys[pygame.K_w] or keys[pygame.K_UP]:
         player.state['jumping'] = False
+
+    # MOUSE REACTIONS

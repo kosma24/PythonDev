@@ -73,21 +73,24 @@ camera = Camera(complex_camera, total_level_width, total_level_height)
 
 # ---------- Main Program Loop -------------
 while True:
-    process(player)
-
     cursor = pygame.mouse.get_pos()
+    process(player, cursor)
+
     player.motion(totalFrames, cursor)
 
     screen.blit(background, (0,0))
 
     camera.update(player)
+    playerPos = camera.apply(player)
 
     for obj in GameObject.container:
         screen.blit(obj.image, camera.apply(obj))
 
-    playerPos = camera.apply(player)
     pygame.draw.line(screen, (25, 76, 190), playerPos.center, cursor, 5)
-
+    pygame.draw.circle(screen, (190, 75, 24), playerPos.center, int(player.rect.width*0.75), 5)
+    for slash in Swing.List:
+        pygame.draw.line(screen, (250, 250, 250), playerPos.center, slash.endPoint, 5)
+    print(Swing.List)
     pygame.display.update()
 
     #if totalFrames % (FPS * 3) == 0:
