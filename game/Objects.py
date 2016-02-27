@@ -15,21 +15,23 @@ class Block(GameObject):
 class Swing(pygame.sprite.Sprite):
 
     List = pygame.sprite.Group()
-
+    Count = 0
     def __init__(self, playerPos, cursor, degree):
         pygame.sprite.Sprite.__init__(self)
         Swing.List.add(self)
-
+        Swing.Count += 1
         self.playerPos = playerPos
         self.center = playerPos.center
         self.cursor = cursor
         self.degree = degree
+        self.startPoint = self.__get_inner_point()
         self.endPoint = self.__get_outer_point()
         self.framesToLive = 1
 
     def slash(self):
 
-        Swing(self.playerPos, self.cursor, self.degree-25)
+        if Swing.Count < 10:
+            Swing(self.playerPos, self.cursor, self.degree-25)
         self.__delete()
 
 
@@ -41,7 +43,20 @@ class Swing(pygame.sprite.Sprite):
         del self
 
     def __get_inner_point(self):
-        pass
+        cursorX = float(self.cursor[0] - self.center[0])
+        cursorY = float(self.cursor[1] - self.center[1])
+        if cursorY == 0:
+            cursorY == 1
+        if cursorX == 0:
+            cursorX = 1
+
+        theta = math.degrees(math.atan(float(cursorY / cursorX)))
+        alfa = theta -self.degree
+        y = math.cos(math.radians(alfa)) * 45
+        x = math.sqrt(math.pow(45, 2) - math.pow(y, 2))
+        y = int(y + self.center[1])
+        x = int(x + self.center[0])
+        return (x, y)
 
     def __get_outer_point(self):
         cursorX = float(self.cursor[0] - self.center[0])
@@ -52,9 +67,10 @@ class Swing(pygame.sprite.Sprite):
             cursorX = 1
 
         theta = math.degrees(math.atan(float(cursorY / cursorX)))
-        alfa = theta + self.degree
-        y = math.cos(math.radians(alfa)) * 75
-        x = math.sqrt(math.pow(75, 2) - math.pow(y, 2))
+        alfa = theta - self.degree
+        print(alfa)
+        y = math.cos(math.radians(alfa)) * 120
+        x = math.sqrt(math.pow(120, 2) - math.pow(y, 2))
         y = int(y + self.center[1])
         x = int(x + self.center[0])
         return (x, y)

@@ -95,7 +95,7 @@ while True:
     #pygame.draw.circle(screen, (190, 75, 24), playerPos.center, int(player.rect.width*0.75), 5)
 
     for swing in Swing.List:
-        pygame.draw.line(screen, (250, 250, 250), playerPos.center, swing.endPoint, 10)
+        pygame.draw.line(screen, (250, 250, 250), swing.startPoint, swing.endPoint, 10)
         swing.slash()
 
 

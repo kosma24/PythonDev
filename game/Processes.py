@@ -9,6 +9,7 @@ def process(player, playerPos, cursor):
             pygame.quit()
             sys.exit()
         if  event.type == pygame.MOUSEBUTTONUP:
+            Swing.Count = 0
             Swing(playerPos, cursor, 35)
 
 
