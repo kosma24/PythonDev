@@ -1,5 +1,7 @@
 import pygame
+import os
 from Config import *
+from Objects import *
 
 class Camera(object):
     def __init__(self, cameraFunction, width, height):
@@ -27,3 +29,28 @@ def complex_camera(camera, target_rect):
     t = max(-(camera.height - WINDOW_HEIGHT), t) # stop scrolling at the bottom
     t = min(0, t)                           # stop scrolling at the top
     return pygame.Rect(l, t, w, h)
+
+
+
+class Level(object):
+
+    def __init__(self, levelNum):
+        self.levelNum = levelNum
+        fileName = 'level%d.png' % (levelNum)
+        self.map = pygame.image.load(os.path.join('levels', fileName))
+        self.width = self.map.get_width()
+        self.height = self.map.get_height()
+        print((self.width, self.height))
+
+    def build(self):
+        x = 0
+        y = 0
+        for row in range(0, self.height):
+            for col in range(0, self.width):
+                colour = self.map.get_at((col, row))
+                #print(colour == (0, 0, 0, 255))
+                if colour == (0, 0, 0, 255):
+                    Block(BLOCK, x, y, os.path.join('images', 'block.png'), 1)
+                x += 50
+            y += 50
+            x = 0
