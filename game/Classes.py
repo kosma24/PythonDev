@@ -40,7 +40,7 @@ class Level(object):
         self.map = pygame.image.load(os.path.join('levels', fileName))
         self.width = self.map.get_width()
         self.height = self.map.get_height()
-        print((self.width, self.height))
+        self.playerSpawnPoint = (100,100)
 
     def build(self):
         x = 0
@@ -50,7 +50,9 @@ class Level(object):
                 colour = self.map.get_at((col, row))
                 #print(colour == (0, 0, 0, 255))
                 if colour == (0, 0, 0, 255):
-                    Block(BLOCK, x, y, os.path.join('images', 'block.png'), 1)
+                    Block(BLOCK, (x, y), os.path.join('images', 'block.png'), 1)
+                elif colour == (0,255,0,255):
+                    self.playerSpawnPoint = (x, y)
                 x += 50
             y += 50
             x = 0

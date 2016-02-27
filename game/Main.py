@@ -25,12 +25,12 @@ clock = pygame.time.Clock()
 totalFrames = 0
 
 # LEVEL GENERATOR
-level = Level(1)
+level = Level(2)
 level.build()
 
 
 # OBJECTSw
-player = Player(PLAYER, 150, 11*50 , "images/pirate_standing1.png", SPRITESCALE)
+player = Player(PLAYER, (level.playerSpawnPoint) , "images/pirate_standing1.png", SPRITESCALE)
 
 # CAMERA
 total_level_width  = level.width * 50

@@ -4,7 +4,7 @@ class GameObject(pygame.sprite.Sprite):
 
     container = pygame.sprite.Group()
 
-    def __init__(self, ID, x, y, imageString, scale):
+    def __init__(self, ID, (x, y), imageString, scale):
         pygame.sprite.Sprite.__init__(self)
         GameObject.container.add(self)
         self.ID = ID

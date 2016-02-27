@@ -8,8 +8,8 @@ class Player(GameObject):
 
     List = pygame.sprite.Group()
 
-    def __init__(self, ID, x, y, imageString, scale):
-        GameObject.__init__(self, ID, x, y, imageString, scale)
+    def __init__(self, ID, (x, y), imageString, scale):
+        GameObject.__init__(self, ID, (x, y), imageString, scale)
         Player.List.add(self)
         self.velx = 0
         self.vely = 0
